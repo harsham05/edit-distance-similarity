@@ -13,13 +13,13 @@ if __name__ == "__main__":
     na_metadata = ["resourceName"]
     argParser = argparse.ArgumentParser('Edit Distance Similarity based on Metadata values')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
-    argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File')
+    argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance')
     args = argParser.parse_args()
 
     if args.inputDir and args.outCSV:
         with open(args.outCSV, "wb") as outF:
             a = csv.writer(outF, delimiter=',')
-            a.writerow(["x-coordinate","y-coordinate","edit_distance"])
+            a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
             filename_list = []
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
                     file1_feature_value = stringify(file1_parsedData["metadata"][feature])
                     file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                    #print feature                print file1_feature_value                     print file2_feature_value
+                    #print feature                print file1_feature_value                    print file2_feature_value
                                   
                     feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
                     #print feature_distance, "\n\n"
@@ -61,11 +61,3 @@ if __name__ == "__main__":
 
                 row_edit_distance.append(1-file_edit_distance)
                 a.writerow(row_edit_distance)
-
-                print "File edit distance metric", (1-file_edit_distance)
-            
-                
-                    
-            
-        
-        
