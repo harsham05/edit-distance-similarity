@@ -11,14 +11,18 @@
 ### Usage
 
 ```
-Usage: edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV
+Usage: edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
 
 --inputDir INPUTDIR  path to directory containing files
 
 --outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance
 
+--accept [ACCEPT]    Optional: compute similarity only on specified IANA MIME Type(s)
 
-**Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/output.csv**
+```
+
+```
+Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/output.csv --accept png pdf gif
 
 ```
 

@@ -14,6 +14,7 @@ if __name__ == "__main__":
     argParser = argparse.ArgumentParser('Edit Distance Similarity based on Metadata values')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
     argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance')
+    argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
 
     if args.inputDir and args.outCSV:
@@ -30,7 +31,11 @@ if __name__ == "__main__":
                         filename_list.append(os.path.join(root, filename))
 
             filename_list = [filename for filename in filename_list if parser.from_file(filename)]       #print "Debug, total files in directory", len(filename_list)
-
+            if args.accept:                
+                filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in args.accept]
+            else:
+                print "Accepting all MIME Types....."
+ 
             files_tuple = itertools.combinations(filename_list, 2)
             for file1, file2 in files_tuple:
 
