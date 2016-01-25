@@ -15,6 +15,7 @@ if __name__ == "__main__":
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
     argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
+    argParser.add_argument('--allKeys', action='store_true', help='compute edit distance across all keys')
     args = argParser.parse_args()
 
     if args.inputDir and args.outCSV:
@@ -46,7 +47,7 @@ if __name__ == "__main__":
                 file1_parsedData = parser.from_file(file1)
                 file2_parsedData = parser.from_file(file2)
         
-                intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys())
+                intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys())                
                 intersect_features = [feature for feature in intersect_features if feature not in na_metadata ]
 
                 file_edit_distance = 0.0
@@ -58,11 +59,22 @@ if __name__ == "__main__":
                     #print feature                print file1_feature_value                    print file2_feature_value
                                   
                     feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
-                    #print feature_distance, "\n\n"
-
+                    #print feature_distance, "\n\n"                    
                     file_edit_distance += feature_distance
 
-                file_edit_distance /= float(len(intersect_features))    #average edit distance
+                
+                if args.allKeys:
+                    file1_only_features = set(file1_parsedData["metadata"].keys()) - set(intersect_features)
+                    file1_only_features = [feature for feature in file1_only_features if feature not in na_metadata]
+
+                    file2_only_features = set(file2_parsedData["metadata"].keys()) - set(intersect_features)
+                    file2_only_features = [feature for feature in file2_only_features if feature not in na_metadata]
+
+                    file_edit_distance += len(file1_only_features) + len(file2_only_features)
+                    file_edit_distance /= float(len(intersect_features) + len(file1_only_features) + len(file2_only_features))
+
+                else:
+                    file_edit_distance /= float(len(intersect_features))    #average edit distance
 
                 row_edit_distance.append(1-file_edit_distance)
                 a.writerow(row_edit_distance)

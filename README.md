@@ -11,13 +11,15 @@
 ### Usage
 
 ```
-Usage: edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
+Usage: edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
 
 --inputDir INPUTDIR  path to directory containing files
 
 --outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance
 
 --accept [ACCEPT]    Optional: compute similarity only on specified IANA MIME Type(s)
+
+--allKeys            Optional: compute edit distance across all metadata keys of 2 documents, else default to only intersection of metadata keys
 
 ```
 
