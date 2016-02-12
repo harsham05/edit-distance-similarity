@@ -15,8 +15,7 @@ class Vector:
     def __init__(self, features):
         '''
         Create a vector
-        @param  identifier for vector 
-        @param features => expect (string, int) key value pairs
+        @param metadata features 
         '''
         na_metadata = ["resourceName"]
         for na in na_metadata:
@@ -63,7 +62,3 @@ class Vector:
         cos 0 = 1 implies identical documents
         '''
         return self.dotProduct(v2) / (self.getMagnitude() * v2.getMagnitude())
-
-
-
-
