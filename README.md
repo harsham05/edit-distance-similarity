@@ -1,4 +1,6 @@
 
+#This REPO is deprecated. Code has been contributed to [Tika-Similarity](https://github.com/chrismattmann/tika-similarity)
+
 ## Edit Distance Similarity based on Metadata Values
 
 
